@@ -1,0 +1,35 @@
+server:
+  port: 8080
+spring:
+  application:
+    name:api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: driver-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/users/**
+          filters:
+            - StripPrefix=1
+        - id: trip-service
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/orders/**
+          filters:
+            - StripPrefix=1
+        - id: matching-service
+          uri: lb://MATCHING-SERVICE
+          predicates:
+            - Path=/matching/**
+          filters:
+            - StripPrefix=1
+      discovery:
+        locator:
+          enabled: true
+jwt:
+  secret: your_jwt_secret_key
+  expiration: 3600
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
