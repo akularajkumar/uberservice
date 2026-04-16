@@ -3,9 +3,12 @@ package com.core.uber.models;
 
 import jakarta.persistence.Entity;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 public class Rider extends User{
 
     private UserType userType;

@@ -1,13 +1,13 @@
-package org.projects.uber;
+package com.core.uber;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class UberApplication {
+public class DriverServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(UberApplication.class, args);
+        SpringApplication.run(DriverServiceApplication.class, args);
     }
 
 }
