@@ -1,6 +1,7 @@
 package com.core.uber.controllers;
 
 
+import com.core.uber.dtos.ValidateOtp;
 import com.core.uber.dtos.otpRequest;
 import com.core.uber.dtos.riderDto;
 import com.core.uber.services.UserService;
@@ -28,6 +29,11 @@ public class AuthController {
     @PostMapping("/otp")
     public void otpRequest(@RequestBody otpRequest otpRequest){
         userService.otpRequest(otpRequest.getPhoneNumber());
+    }
+
+    @PostMapping("/validateOtp")
+    public String validateOtp(@RequestBody ValidateOtp validateOtp){
+       return userService.validateOtp(validateOtp.getPhoneNumber(), validateOtp.getOtp());
     }
 
 

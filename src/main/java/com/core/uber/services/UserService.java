@@ -44,4 +44,12 @@ public class UserService {
         System.out.println("OTP for " + phoneNumber + ": " + otp);
 
     }
+
+    public String validateOtp(String phoneNumber, String otp){
+       String otpverified = redisTemplate.opsForValue().get(phoneNumber).toString();
+      if(otpverified.equals(otp)){
+          return "OTP validated successfully";
+      }
+      return "Wrong otp";
+    }
 }
