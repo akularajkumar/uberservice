@@ -9,4 +9,6 @@ public interface RiderRepository extends JpaRepository<Rider, Long> {
 
 
   Rider save(Rider rider);
+
+  Rider findByPhoneNumber(String phoneNumber);
 }
