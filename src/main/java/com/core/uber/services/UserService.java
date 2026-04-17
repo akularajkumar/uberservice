@@ -4,13 +4,18 @@ import com.core.uber.dtos.riderDto;
 import com.core.uber.models.Rider;
 import com.core.uber.repositories.RiderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.security.SecureRandom;
 
 @Service
 public class UserService {
 
     @Autowired
     RiderRepository riderRepository;
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
 
     public  String signUp(riderDto riderDto){
@@ -28,7 +33,15 @@ public class UserService {
 
     }
 
-    public void otpRequest(Object otpRequest) {
+    public void otpRequest(String  phoneNumber) {
+        // generate otp
+        // send otp to phone number
+
+       String otp =  String.valueOf(new SecureRandom().nextInt(900000) + 100000);
+
+       redisTemplate.opsForValue().set(phoneNumber, otp);
+
+        System.out.println("OTP for " + phoneNumber + ": " + otp);
 
     }
 }
