@@ -1,5 +1,6 @@
 package com.core.uber.services;
 
+import com.core.uber.configs.JwtUtil;
 import com.core.uber.dtos.riderDto;
 import com.core.uber.models.Rider;
 import com.core.uber.repositories.RiderRepository;
@@ -20,17 +21,17 @@ public class UserService {
     UserRepository userRepository;
 
     @Autowired
+    JwtUtil jwtUtil;
+
+    @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
 
     public  String signUp(riderDto riderDto){
 
         Rider rider = new Rider();
-        rider.setName(riderDto.getName());
-        rider.setName(rider.getName());
-        rider.setUserName(riderDto.getEmail());
+        rider.setPhoneNumber(riderDto.getPhoneNumber());
 
-        rider.setPassword(riderDto.getPassword());
 
         riderRepository.save(rider);
 
@@ -54,12 +55,22 @@ public class UserService {
        String otpverified = redisTemplate.opsForValue().get(phoneNumber).toString();
       if(otpverified.equals(otp)){
 
-        Rider rider=  riderRepository.findByPhoneNumber(phoneNumber)
+        Rider rider=  riderRepository.findByPhoneNumber(phoneNumber);
               if(rider!=null){
-                  jwtUtil.g
-              }
 
-          return "OTP validated successfully";
+
+              }
+              else{
+                     Rider rider1  = new Rider();
+                     rider1.setPhoneNumber(phoneNumber);
+                     riderRepository.save(rider1);
+              }
+          Rider riderDetail =  riderRepository.findByPhoneNumber(phoneNumber);
+          String token  = jwtUtil.generateToken(riderDetail.getId(),phoneNumber);
+          redisTemplate.opsForValue().set("token:"+phoneNumber, token);
+          return token;
+
+
       }
       return "Wrong otp";
     }

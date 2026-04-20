@@ -1,11 +1,13 @@
 package com.core.uber.controllers;
 
 
+import com.core.uber.dtos.AuthResponseDto;
 import com.core.uber.dtos.ValidateOtp;
 import com.core.uber.dtos.otpRequest;
 import com.core.uber.dtos.riderDto;
 import com.core.uber.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,9 +33,12 @@ public class AuthController {
         userService.otpRequest(otpRequest.getPhoneNumber());
     }
 
-    @PostMapping("/validateOtp")
-    public String validateOtp(@RequestBody ValidateOtp validateOtp){
-       return userService.validateOtp(validateOtp.getPhoneNumber(), validateOtp.getOtp());
+        @PostMapping("/validateOtp")
+    public ResponseEntity<?> validateOtp(@RequestBody ValidateOtp validateOtp){
+      String token = userService.validateOtp(validateOtp.getPhoneNumber(), validateOtp.getOtp());
+
+            return ResponseEntity.ok(new AuthResponseDto(token));
+
     }
 
 
